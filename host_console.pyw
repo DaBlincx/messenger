@@ -79,10 +79,15 @@ class ChatBox:
                 break
             message = size.decode('utf-8')
             self.transcript_box.insert('end', message + '\n')
+            kick_name = self.name_box.get()
             if len(message) == 41:
                 if message.endswith(" HostClient: /stop"):
                     print("Stopping server")
                     os._exit(0)
+            elif len(message) == (42 + len(kick_name)):
+                if " HostClient: /kick " + kick_name in message:
+                    messagebox.showwarning("Kicked","You have been kicked from the server.")
+                    self.kick_response()
             self.transcript_box.yview(END)
 
         so.close()
@@ -158,6 +163,19 @@ class ChatBox:
         
         try:
             self.user_socket.send((self.name_box.get() + " has left the chat.").encode('utf-8'))
+        except ConnectionResetError:
+            print('\nServer closed.\n')
+        self.core.destroy()
+        self.user_socket.close()
+        os._exit(0)
+
+    def kick_response(self):
+        try:
+            leavemsg = self.name_box.get() + " was kicked."
+            if leavemsg == " was kicked":
+                leavemsg = "Undefined user" + leavemsg
+            else:
+                self.user_socket.send((leavemsg).encode('utf-8'))
         except ConnectionResetError:
             print('\nServer closed.\n')
         self.core.destroy()
