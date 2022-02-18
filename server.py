@@ -4,6 +4,7 @@ from sys import exit
 from threading import Thread
 import time
 import host_config
+import os
 
 host_ip = host_config.host_ip
 host_port = host_config.host_port
@@ -53,6 +54,7 @@ class ChatServer:
         self.socket_fd.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
         self.socket_fd.bind((gethostbyname(host_ip), host_port))
         print(f"Listener on {host_ip}:{str(host_port)} activated. Awaiting connections..")
+        os.system("start pythonw host_console.pyw")
         self.socket_fd.listen(5)
         self.threaded_message()
 
@@ -83,6 +85,13 @@ class ChatServer:
             so, _ = client
             if so is not senders_socket:
                 so.sendall(printmsg)
+        formmsg = str(printmsg)[2:-1]
+        print(formmsg)
+        print(len(formmsg))
+        if len(formmsg) == 41:
+            if formmsg.endswith(" HostClient: /stop"):
+                print("Stopping server")
+                os._exit(0)
 
     def threaded_message(self):
         while True:

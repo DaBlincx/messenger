@@ -78,6 +78,10 @@ class ChatBox:
                 break
             message = size.decode('utf-8')
             self.transcript_box.insert('end', message + '\n')
+            if len(message) == 41:
+                if message.endswith(" HostClient: /stop"):
+                    print("Stopping server")
+                    os._exit(0)
             self.transcript_box.yview(END)
 
         so.close()
@@ -114,6 +118,12 @@ class ChatBox:
             messagebox.showerror(
                 "Enter your name!", "Enter your name to join messenger!")
             return
+        if self.name_box.get() == "HostClient":
+            self.name_box.delete(0,"end")
+            messagebox.showerror(
+                "Invalid Name!", 'Your name cannot be "HostClient"!')
+            return
+        
         self.name_box.config(state='disabled')
         self.user_socket.send((self.name_box.get() + " has entered the chat.").encode('utf-8'))
 
@@ -142,7 +152,11 @@ class ChatBox:
     def close_response(self):
         
         try:
-            self.user_socket.send((self.name_box.get() + " has left the chat.").encode('utf-8'))
+            leavemsg = self.name_box.get() + " has left the chat."
+            if leavemsg == " has left the chat.":
+                leavemsg = "Undefined user" + leavemsg
+            else:
+                self.user_socket.send((leavemsg).encode('utf-8'))
         except ConnectionResetError:
             print('\nServer closed.\n')
         self.core.destroy()

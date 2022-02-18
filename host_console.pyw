@@ -1,3 +1,4 @@
+from faulthandler import disable
 import os
 from socket import socket, AF_INET, SOCK_STREAM, gethostbyname
 from threading import Thread
@@ -44,7 +45,7 @@ class ChatBox:
             else:
                 pass
         
-        msg_timestamp = "<"+year+"."+month+"."+day+" | "+hour+":"+min+":"+sec+"> "
+        msg_timestamp = "<"+year+"."+month+"."+day+" | "+hour+":"+min+":"+sec+"> " #<
         return msg_timestamp
 
     def __init__(self, master):
@@ -84,10 +85,14 @@ class ChatBox:
 
     def display_name_section(self):
         frame = Frame()
-        Label(frame, text='', font=("Times", 16)).pack(side='left', padx=10)
+        Label(frame, text=' Name:', font=("Times", 16)).pack(side='left', padx=10)
         self.name_box = Entry(frame, width=round(120*1.06), borderwidth=2)
         self.name_box.pack(side='left', anchor='e')
         self.name_box.insert(0,"HostClient")
+        self.name_box.config(state='disabled')
+        self.join_button = Button(frame, text="Join", width=10, command=print("HostClient logged in successfully."), state='disabled').pack(side='left')
+        frame.pack(side='top', anchor='nw')
+        self.join_response
 
     def chat_box(self):
         frame = Frame()
@@ -136,6 +141,8 @@ class ChatBox:
         self.transcript_box.yview(END)
         self.user_socket.send(message)
         self.remove_text()
+        if data == "/stop":
+            self.close_response()
         return 'random'
 
     def close_response(self):
@@ -150,10 +157,11 @@ class ChatBox:
 
 
 if __name__ == '__main__':
+    time.sleep(2)
     trigger = Tk()
     try:
         chat_win = ChatBox(trigger)
-        trigger.protocol("WM_DELETE_WINDOW", chat_win.close_response)
+        trigger.protocol("WM_DELETE_WINDOW", disable())
         trigger.mainloop()
     except ConnectionRefusedError:
         print('Port 10000 is not actively listening. Please check and enable the server/listener.')
