@@ -79,6 +79,10 @@ class ChatBox:
                 break
             message = size.decode('utf-8')
             self.transcript_box.insert('end', message + '\n')
+            if len(message) == 41:
+                if message.endswith(" HostClient: /stop"):
+                    print("Stopping server")
+                    os._exit(0)
             self.transcript_box.yview(END)
 
         so.close()
@@ -136,6 +140,9 @@ class ChatBox:
         msgTmst = self.msgTimestamp()
         sender = self.name_box.get().strip() + ": "
         data = self.text_box.get(1.0, 'end').strip()
+        if data == "":
+            messagebox.showerror("Empty message!","Please don not send empty messages!")
+            return
         message = (msgTmst + sender + data).encode('utf-8')
         self.transcript_box.insert('end', message.decode('utf-8') + '\n')
         self.transcript_box.yview(END)
@@ -143,6 +150,8 @@ class ChatBox:
         self.remove_text()
         if data == "/stop":
             self.close_response()
+        if data == "/bbb":
+            self.text_box.insert("HIII")
         return 'random'
 
     def close_response(self):
@@ -163,6 +172,7 @@ if __name__ == '__main__':
         chat_win = ChatBox(trigger)
         trigger.protocol("WM_DELETE_WINDOW", disable())
         trigger.mainloop()
+        
     except ConnectionRefusedError:
-        print('Port 10000 is not actively listening. Please check and enable the server/listener.')
+        os.system("start python server.py")
     

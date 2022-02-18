@@ -78,10 +78,15 @@ class ChatBox:
                 break
             message = size.decode('utf-8')
             self.transcript_box.insert('end', message + '\n')
+            kick_name = self.name_box.get()
             if len(message) == 41:
                 if message.endswith(" HostClient: /stop"):
-                    print("Stopping server")
                     os._exit(0)
+            elif len(message) == (42 + len(kick_name)):
+                if " HostClient: /kick " + kick_name in message:
+                    messagebox.showwarning("Kicked","You have been kicked from the server.")
+                    self.close_response
+                    return
             self.transcript_box.yview(END)
 
         so.close()
@@ -142,6 +147,9 @@ class ChatBox:
         msgTmst = self.msgTimestamp()
         sender = self.name_box.get().strip() + ": "
         data = self.text_box.get(1.0, 'end').strip()
+        if data == "":
+            messagebox.showerror("Empty message!","Please don not send empty messages!")
+            return
         message = (msgTmst + sender + data).encode('utf-8')
         self.transcript_box.insert('end', message.decode('utf-8') + '\n')
         self.transcript_box.yview(END)
