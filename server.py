@@ -78,19 +78,21 @@ class ChatServer:
         so.close()
 
     def show_to_audience(self, senders_socket):
+        printmsg = self.latest_msg.encode('utf-8')
         for client in self.audience_list:
             so, _ = client
             if so is not senders_socket:
-                printmsg = self.latest_msg.encode('utf-8')
                 so.sendall(printmsg)
-                print(str(printmsg)[2:-1])
 
     def threaded_message(self):
         while True:
-            client = so, (ip, port) = self.socket_fd.accept()
-            self.receiver_list(client)
-            print(f'\nConnection accepted from {ip}:{port}')
-            Thread(target=self.receive_messages, args=([so])).start()
+            try:
+                client = so, (ip, port) = self.socket_fd.accept()
+                self.receiver_list(client)
+                print(f'\nConnection accepted from {ip}:{port}')
+                Thread(target=self.receive_messages, args=([so])).start()
+            except:
+                exit()
 
 
 if __name__ == "__main__":

@@ -84,11 +84,10 @@ class ChatBox:
 
     def display_name_section(self):
         frame = Frame()
-        Label(frame, text='Enter your Name:', font=("Times", 16)).pack(side='left', padx=10)
+        Label(frame, text='', font=("Times", 16)).pack(side='left', padx=10)
         self.name_box = Entry(frame, width=round(120*1.06), borderwidth=2)
         self.name_box.pack(side='left', anchor='e')
-        self.join_button = Button(frame, text="Join", width=10, command=self.join_response).pack(side='left')
-        frame.pack(side='top', anchor='nw')
+        self.name_box.insert(0,"HostClient")
 
     def chat_box(self):
         frame = Frame()
