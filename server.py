@@ -4,7 +4,6 @@ from sys import exit
 from threading import Thread
 import time
 import host_config
-from tkinter import messagebox
 
 host_ip = host_config.host_ip
 host_port = host_config.host_port
@@ -16,7 +15,6 @@ class ChatServer:
     def msgTimestamp(objdd):
         tm = str(time.localtime())
         tmlist = tm.replace("time.struct_time(tm_","").replace(")","").split(", tm_")
-        ##print(tmlist)
         for det in tmlist:
             if det.startswith("year="):
                 year  = str(det.replace("year=",""))
@@ -42,7 +40,6 @@ class ChatServer:
                     sec = "0"+sec
             else:
                 pass
-            ##print(det)
         
         msg_timestamp = "<"+year+"."+month+"."+day+" | "+hour+":"+min+":"+sec+"> "
         return msg_timestamp
@@ -72,7 +69,7 @@ class ChatServer:
                 if not message_buff or len(msg_checker) < 2:
                     break
                 self.latest_msg = message_buff.decode('utf-8')
-                self.show_to_audience(so)  # send to all clients
+                self.show_to_audience(so)
             except OSError as os_error:
                 if str(os_error) == '[Errno 9] Bad file descriptor':
                     print(f"Origin: {':'.join(str(raddr) for raddr in so.getsockname())} "

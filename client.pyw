@@ -18,7 +18,6 @@ class ChatBox:
     def msgTimestamp(objdd):
         tm = str(time.localtime())
         tmlist = tm.replace("time.struct_time(tm_","").replace(")","").split(", tm_")
-        ##print(tmlist)
         for det in tmlist:
             if det.startswith("year="):
                 year  = str(det.replace("year=",""))
@@ -44,7 +43,6 @@ class ChatBox:
                     sec = "0"+sec
             else:
                 pass
-            ##print(det)
         
         msg_timestamp = "<"+year+"."+month+"."+day+" | "+hour+":"+min+":"+sec+"> "
         return msg_timestamp
