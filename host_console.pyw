@@ -99,7 +99,7 @@ class ChatBox:
         self.name_box.pack(side='left', anchor='e')
         self.name_box.insert(0,"HostClient")
         self.name_box.config(state='disabled')
-        self.join_button = Button(frame, text="Join", width=10, command=print("HostClient logged in successfully."), state='disabled').pack(side='left')
+        self.join_button = Button(frame, text="Joined", width=10, command=print("HostClient logged in successfully."), state='disabled').pack(side='left')
         frame.pack(side='top', anchor='nw')
         self.join_response
 

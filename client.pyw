@@ -128,7 +128,7 @@ class ChatBox:
                 "Invalid Name!", 'Your name cannot be "HostClient"!')
             return
         
-        self.name_box.config(state='disabled')
+        self.name_box.config(text="Joined", state='disabled')
         self.user_socket.send((self.name_box.get() + " has entered the chat.").encode('utf-8'))
 
     def enter_response(self, event):
