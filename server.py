@@ -3,11 +3,11 @@ from socket import socket, AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR, getho
 from sys import exit
 from threading import Thread
 import time
-import os
+import host_config
 from tkinter import messagebox
 
-host_ip = '192.168.178.47'
-host_port = 10000
+host_ip = host_config.host_ip
+host_port = host_config.host_port
 
 class ChatServer:
     audience_list = []
@@ -78,8 +78,6 @@ class ChatServer:
                     print(f"Origin: {':'.join(str(raddr) for raddr in so.getsockname())} "
                           f"has been attempted to access from an unsupported gateway. "
                           f"Socket: {':'.join(str(raddr) for raddr in so.getpeername())}")
-            except (KeyboardInterrupt, ConnectionResetError):
-                exit("Thanks for using my chat server. Bye..")
         so.close()
 
     def show_to_audience(self, senders_socket):
@@ -92,16 +90,10 @@ class ChatServer:
 
     def threaded_message(self):
         while True:
-            try:
-                client = so, (ip, port) = self.socket_fd.accept()
-                self.receiver_list(client)
-                print(f'\nConnection accepted from {ip}:{port}')
-                Thread(target=self.receive_messages, args=([so])).start()
-            except KeyboardInterrupt:
-                exit("Thanks for using my chat server. Bye..")
-    #if KeyboardInterrupt:
-        #print("Thanks for using my chat server. Bye..")
-        #exit()
+            client = so, (ip, port) = self.socket_fd.accept()
+            self.receiver_list(client)
+            print(f'\nConnection accepted from {ip}:{port}')
+            Thread(target=self.receive_messages, args=([so])).start()
 
 
 if __name__ == "__main__":

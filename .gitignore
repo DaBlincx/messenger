@@ -1,2 +1,3 @@
 .idea
 venv
+__pycache__/host_config.cpython-310.pyc

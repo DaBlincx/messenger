@@ -3,6 +3,10 @@ from socket import socket, AF_INET, SOCK_STREAM, gethostbyname
 from threading import Thread
 import time
 from tkinter import Tk, END, Frame, Text, Scrollbar, Label, Entry, Button, VERTICAL, messagebox
+import host_config
+
+host_ip = host_config.host_ip
+host_port = host_config.host_port
 
 wwidth = 120
 whight = 30
@@ -57,7 +61,7 @@ class ChatBox:
 
     def socket_init(self):
         self.user_socket = socket(AF_INET, SOCK_STREAM)
-        self.user_socket.connect((gethostbyname('192.168.178.47'), 10000))
+        self.user_socket.connect((gethostbyname(host_ip), host_port))
 
     def chatbox_init(self):
         self.core.title("Socket Chat")
@@ -148,7 +152,6 @@ class ChatBox:
 
 
 if __name__ == '__main__':
-    time.sleep(3)
     trigger = Tk()
     try:
         chat_win = ChatBox(trigger)
