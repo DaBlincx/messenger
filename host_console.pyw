@@ -80,14 +80,12 @@ class ChatBox:
             message = size.decode('utf-8')
             self.transcript_box.insert('end', message + '\n')
             kick_name = self.name_box.get()
-            if len(message) == 41:
-                if message.endswith(" HostClient: /stop"):
-                    print("Stopping server")
-                    os._exit(0)
-            elif len(message) == (42 + len(kick_name)):
-                if " HostClient: /kick " + kick_name in message:
-                    messagebox.showwarning("Kicked","You have been kicked from the server.")
-                    self.kick_response()
+            if len(message) == 41 and message.endswith(" HostClient: /stop"):
+                print("Stopping server")
+                os._exit(0)
+            elif len(message) == (42 + len(kick_name)) and (" HostClient: /kick " + kick_name) in message:
+                messagebox.showwarning("Kicked","You have been kicked from the server.")
+                self.kick_response()
             self.transcript_box.yview(END)
 
         so.close()
