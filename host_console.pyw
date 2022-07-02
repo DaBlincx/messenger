@@ -63,7 +63,7 @@ class ChatBox:
         self.user_socket.connect((gethostbyname(host_ip), host_port))
 
     def chatbox_init(self):
-        self.core.title("Socket Chat")
+        self.core.title("Host Client")
         self.core.resizable(0,0)
         self.chat_box()
         self.display_name_section()

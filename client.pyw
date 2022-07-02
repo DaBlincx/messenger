@@ -62,7 +62,7 @@ class ChatBox:
         self.user_socket.connect((gethostbyname(host_ip), host_port))
 
     def chatbox_init(self):
-        self.core.title("Socket Chat")
+        self.core.title("Chat Client")
         self.core.resizable(0,0)
         self.chat_box()
         self.display_name_section()
@@ -192,4 +192,4 @@ if __name__ == '__main__':
         trigger.mainloop()
     except ConnectionRefusedError:
         print('Port 10000 is not actively listening. Please check and enable the server/listener.')
-    
+        messagebox.showerror("Server Error!", "Chatserver is not online. \nPlease try again later or contact your system administrator")
